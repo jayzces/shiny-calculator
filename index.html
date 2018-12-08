@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Shiny Calculator for Pokemon Let's Go">
+        <link href="https://fonts.googleapis.com/css?family=Cabin:400,500" rel="stylesheet" />
+        <link href="styles.css" rel="stylesheet" type="text/css" />
+        <title>Shiny Calculator</title>
+    </head>
+    <body>
+        <div class="container">
+            <h1 class="title">
+                <span>Shiny Calculator</span> <strong id="poss"></strong>
+            </h1>
+            <div class="combo-input">
+                <label for="combo">Catch Combo</label>
+                <input type="number" id="combo" min="0" value="0" />
+            </div>
+
+            <div class="enhancers">
+                <div>
+                    <input type="checkbox" id="lure" />
+                    <label for="lure">Lure</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" id="charm" />
+                    <label for="charm">Shiny Charm</label>
+                </div>
+            </div>
+        </div>
+
+        <script src="script.js"></script>
+    </body>
+</html>
