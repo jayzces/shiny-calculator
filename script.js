@@ -30,37 +30,47 @@ const comboInput = document.querySelector('#combo')
 const lureInput = document.querySelector('#lure')
 const charmInput = document.querySelector('#charm')
 
-const updatePossibility = () => {
+const updateProbability = () => {
     let odds = normalOdds
 
     if (lureInput.checked && !charmInput.checked) odds = lureOdds
     else if (!lureInput.checked && charmInput.checked) odds = charmOdds
     else if (lureInput.checked && charmInput.checked) odds = lureAndCharmOdds
 
-    let tier = odds.tier1
     let combo = comboInput.value
     let title = document.querySelector('.title span')
 
     if (combo > 0) title.innerHTML = 'Shiny Chances'
     else title.innerHTML = 'Shiny Calculator'
 
-    if (combo >= 31) tier = odds.tier4
-    else if (combo > 20) tier = odds.tier3
-    else if (combo > 10) tier = odds.tier2
+    let probability = 0
 
-    let possibility = (1 - (Math.pow((1 - tier), combo))) * 100
-    possibility = Math.floor(possibility * 100) / 100
+    if (combo < 11)
+        probability = computeProbability(odds.tier1, combo)
+    else if (combo < 21)
+        probability = computeProbability(odds.tier1, 10) * computeProbability(odds.tier2, combo - 10)
+    else if (combo < 31)
+        probability = computeProbability(odds.tier1, 10) * computeProbability(odds.tier2, 10) * computeProbability(odds.tier3, combo - 20)
+    else
+        probability = computeProbability(odds.tier1, 10) * computeProbability(odds.tier2, 10) * computeProbability(odds.tier3, 10) * computeProbability(odds.tier4, combo - 30)
 
-    let possContainer = document.querySelector('#poss')
+    probability = (1 - probability) * 100
+    probability = Math.floor(probability * 100) / 100
 
-    if (possibility == 0) possContainer.innerHTML = ''
-    else possContainer.innerHTML = `${possibility}%`
+    let probContainer = document.querySelector('#prob')
+
+    if (probability == 0) probContainer.innerHTML = ''
+    else probContainer.innerHTML = `${probability}%`
 }
 
-lureInput.addEventListener('change', updatePossibility, false)
-charmInput.addEventListener('change', updatePossibility, false)
-comboInput.addEventListener('keyup', updatePossibility, false)
+const computeProbability = (tier, combo) => {
+    return Math.pow((1 - tier), combo)
+}
+
+lureInput.addEventListener('change', updateProbability, false)
+charmInput.addEventListener('change', updateProbability, false)
+comboInput.addEventListener('keyup', updateProbability, false)
 comboInput.addEventListener('change', () => {
     if (!comboInput.value) comboInput.value = 0
-    updatePossibility()
+    updateProbability()
 }, false)
